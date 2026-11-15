@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="dark">
+  <title>猫娘星海作战</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app" id="app">
+    <header class="topbar">
+      <div class="brand">
+        <canvas class="brand-face" id="brand-face" width="32" height="32" aria-hidden="true"></canvas>
+        <div class="brand-text">
+          <h1>猫娘星海作战</h1>
+          <p id="status-line">正在连接猫娘…</p>
+        </div>
+      </div>
+      <nav class="topbar-actions">
+        <button class="btn btn-ghost" id="btn-codex" type="button">图鉴</button>
+        <button class="btn btn-ghost" id="btn-settings" type="button">设置</button>
+      </nav>
+    </header>
+
+    <main class="layout">
+      <section class="stage-shell">
+        <div class="stage" id="stage">
+          <canvas id="game" width="480" height="720" aria-label="太空战场"></canvas>
+
+          <div class="hud hidden" id="hud">
+            <div class="hud-row hud-top">
+              <div class="hud-block">
+                <span class="hud-label">得分</span>
+                <strong class="hud-value" id="hud-score">0</strong>
+              </div>
+              <div class="hud-block">
+                <span class="hud-label">波次</span>
+                <strong class="hud-value" id="hud-wave">1</strong>
+              </div>
+              <div class="hud-block hud-right">
+                <span class="hud-label">装甲</span>
+                <div class="hull" id="hud-hull"></div>
+              </div>
+            </div>
+
+            <div class="cat-bubble hidden" id="cat-bubble">
+              <span class="cat-name" id="cat-name">猫娘</span>
+              <span class="cat-text" id="cat-line">一起上吧！</span>
+            </div>
+
+            <div class="hud-row hud-bottom">
+              <div class="bond">
+                <div class="bond-label"><span>羁绊</span><strong id="hud-bond">0</strong></div>
+                <div class="bond-track"><div class="bond-fill" id="hud-bond-fill"></div></div>
+              </div>
+              <div class="combo hidden" id="hud-combo">x1.0</div>
+            </div>
+          </div>
+
+          <div class="screen" id="screen-boot">
+            <div class="boot-box">
+              <div class="boot-spinner" aria-hidden="true"></div>
+              <p class="boot-title">正在唤醒猫娘…</p>
+              <p class="boot-sub" id="boot-sub">初始化像素战场</p>
+            </div>
+          </div>
+
+          <div class="screen hidden" id="screen-start">
+            <div class="screen-inner">
+              <div class="logo">
+                <canvas class="logo-face" id="logo-face" width="96" height="96" aria-hidden="true"></canvas>
+                <h2>猫娘星海作战</h2>
+                <p class="logo-sub">NEKO SPACE WAR · PIXEL EDITION</p>
+              </div>
+              <div class="cat-hello">
+                <span class="cat-name" id="start-cat-name">猫娘</span>
+                <p id="start-line">舰长，僚机已就位。今天也一起把星海打穿吧！</p>
+              </div>
+              <div class="start-stats" id="start-stats"></div>
+              <div class="difficulty" id="start-difficulty" role="group" aria-label="难度选择"></div>
+              <div class="start-actions">
+                <button class="btn btn-primary btn-lg" id="btn-start" type="button">开始战斗</button>
+                <button class="btn btn-ghost" id="btn-start-codex" type="button">战绩与图鉴</button>
+              </div>
+              <p class="start-foot">拖动星舰移动 · 自动开火 · 1-4 战术指令 · P 暂停</p>
+            </div>
+          </div>
+
+          <div class="screen hidden" id="screen-pause">
+            <div class="screen-inner pause-inner">
+              <p class="result-kicker">已暂停</p>
+              <h2>舰桥待机</h2>
+              <p class="pause-line" id="pause-line">要喘口气吗？我帮你盯着雷达。</p>
+              <div class="pause-actions">
+                <button class="btn btn-primary" id="btn-resume" type="button">继续战斗</button>
+                <button class="btn btn-ghost" id="btn-restart" type="button">重新开始</button>
+                <button class="btn btn-ghost" id="btn-quit" type="button">收兵返航</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="screen hidden" id="screen-result">
+            <div class="screen-inner result-inner">
+              <p class="result-kicker">本局战报</p>
+              <h2 id="result-title">星舰返航</h2>
+              <div class="result-grid" id="result-grid"></div>
+              <div class="result-badges" id="result-badges"></div>
+              <p class="result-cat" id="result-line"></p>
+              <p class="result-feed" id="result-feed"></p>
+              <div class="result-actions">
+                <button class="btn btn-primary" id="btn-again" type="button">再来一局</button>
+                <button class="btn btn-ghost" id="btn-hangar" type="button">返回机库</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="orders hidden" id="orders" role="group" aria-label="战术指令"></div>
+        <p class="stage-hint" id="stage-hint">拖动星舰 · 自动开火 · 1-4 战术指令 · P 暂停</p>
+      </section>
+
+      <aside class="comm">
+        <div class="comm-head">
+          <span class="comm-title">机内通讯</span>
+          <span class="comm-hint" id="comm-hint">直接跟她说话，她会当场回你</span>
+        </div>
+        <div class="comm-log" id="comm-log" aria-live="polite"></div>
+        <div class="comm-quick" id="comm-quick"></div>
+        <form class="comm-input" id="comm-form" autocomplete="off">
+          <input id="comm-text" type="text" maxlength="200" placeholder="对猫娘说点什么…" aria-label="对猫娘说的话">
+          <button class="btn btn-send" type="submit">发送</button>
+        </form>
+      </aside>
+    </main>
+  </div>
+
+  <div class="modal hidden" id="modal-codex">
+    <div class="modal-box">
+      <header class="modal-head">
+        <h2>战绩与图鉴</h2>
+        <button class="btn btn-ghost btn-close" id="btn-codex-close" type="button" aria-label="关闭">关闭</button>
+      </header>
+      <div class="modal-body" id="codex-body"></div>
+    </div>
+  </div>
+
+  <div class="modal hidden" id="modal-settings">
+    <div class="modal-box">
+      <header class="modal-head">
+        <h2>游戏设置</h2>
+        <button class="btn btn-ghost btn-close" id="btn-settings-close" type="button" aria-label="关闭">关闭</button>
+      </header>
+      <div class="modal-body" id="settings-body"></div>
+    </div>
+  </div>
+
+  <div class="boot-error hidden" id="boot-error"></div>
+  <script type="module" src="main.js"></script>
+</body>
+</html>

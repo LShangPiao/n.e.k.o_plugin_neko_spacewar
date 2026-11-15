@@ -1,0 +1,41 @@
+# 猫娘星海作战 —— 配置示例
+#
+# 真正生效的配置在插件设置里改；这个文件只是逐项说明含义。
+# 注意：本文件刻意只放游戏自定义配置，程序元数据写在外面的 plugin.toml 里。
+
+[neko_spacewar]
+
+# 游戏内显示的称呼（默认「猫娘」；填成你自己猫娘的名字会更自然）。
+# 这只影响游戏画面里的标签文字，说话的一直是主界面的她本人。
+wingman_name = "猫娘"
+
+# 首次打开游戏时的默认难度：easy / normal / hard。
+difficulty = "normal"
+
+# 首次打开游戏时是否默认自动开火。
+auto_fire = true
+
+# 首次打开游戏时的音效 / 音乐开关（WebAudio 实时合成）。
+sfx_enabled = true
+music_enabled = true
+
+# 首次打开游戏时是否把每局战报推送到主界面。
+battle_sync_enabled = true
+
+# 母舰出现/被击破、开局时是否额外推一条只读消息给主界面（母舰事件会进 HUD 通知）。
+boss_comment_enabled = true
+
+# 两局战报之间的最小间隔（秒），范围 0-600，0 表示不限制。
+report_cooldown_seconds = 20
+
+# 是否允许主界面通过 LLM 工具向游戏内下达战术指令。
+enable_llm_orders = true
+
+# 机内通讯是否转给主界面的猫娘本人（由宿主模型用她自己的身份回应）。
+llm_chat_enabled = true
+
+# 开局、母舰出现/击破等节点是否让她主动喊一句（同样由宿主模型生成）。
+llm_banter_enabled = true
+
+# 两次主动搭话之间的最小间隔（秒），0 表示不限制。
+banter_cooldown_seconds = 25
