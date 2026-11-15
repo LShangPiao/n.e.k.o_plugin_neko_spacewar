@@ -239,7 +239,7 @@ def test_battle_report_text_uses_placeholders() -> None:
 
 def test_manifest_ships_interaction_settings() -> None:
     manifest = (PLUGIN_ROOT / "plugin.toml").read_text(encoding="utf-8")
-    assert 'version = "0.4.0"' in manifest
+    assert 'version = "0.4.1"' in manifest
     for key in ("llm_chat_enabled", "llm_banter_enabled", "banter_cooldown_seconds"):
         assert key in manifest
     assert "chat_mirror_enabled" not in manifest
